@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="320px" height="42px" viewBox="0 0 320 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49 (51002) - http://www.bohemiancoding.com/sketch -->
+    <title>Rectangle 2</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="100%" y1="50%" x2="0%" y2="50%" id="linearGradient-1">
+            <stop stop-color="#009ACD" stop-opacity="0" offset="0%"></stop>
+            <stop stop-color="#009ACD" stop-opacity="0.6" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="69.2916667%" y1="50%" x2="0%" y2="50%" id="linearGradient-2">
+            <stop stop-color="#7DDFFF" stop-opacity="0" offset="0%"></stop>
+            <stop stop-color="#7DDFFF" stop-opacity="0.8" offset="100%"></stop>
+        </linearGradient>
+        <polygon id="path-3" points="16.1875093 0 320 0 320 42 16.1875093 42 0 21"></polygon>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="复星" transform="translate(-19.000000, -40.000000)">
+            <g id="Group-11" transform="translate(19.000000, 40.000000)">
+                <g id="Group-2">
+                    <g id="Rectangle-2">
+                        <use fill="url(#linearGradient-1)" fill-rule="evenodd" xlink:href="#path-3"></use>
+                        <path stroke="url(#linearGradient-2)" stroke-width="1" d="M16.4333975,0.5 L0.631305138,21 L16.4333975,41.5 L319.5,41.5 L319.5,0.5 L16.4333975,0.5 Z"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
