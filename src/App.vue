@@ -107,6 +107,9 @@ input[type=checkbox]:checked:after {
 .text-center{
     text-align: center;
 }
+.text-right{
+    text-align:right;
+}
 .float-l{
     float: left;
 }

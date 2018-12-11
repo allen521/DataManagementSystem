@@ -1,17 +1,32 @@
 import echarts from 'echarts'
+var echartsObj={
+    'echarts_5_title':[],
+    'echarts_5_data':[],
+}
 var option_1 = {
+    tooltip : {
+        trigger: 'axis',
+        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+            type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+        }
+    },
     textStyle:{
         color:"#aaaaaa"
     },
     xAxis: {
         type: 'category',
         data: ['上海', '广东', '北京', '电商', '重点客户','医保发展'],
+        nameRotate:30,
         axisLine: {
             lineStyle: {
                 type: 'solid',
                 color:'#aaaaaa',
                 width:'1'
             }
+        },
+        axisLabel: {
+            interval:0,
+            rotate:20
         },
     },
     yAxis: {
@@ -38,7 +53,7 @@ var option_1 = {
         left:45,
         right:10,
         top:30,
-        bottom:20,
+        bottom:30,
         containLabel:false,
         show:'true',
         borderWidth:'0'
@@ -150,7 +165,7 @@ var option_3= {
         data: ['a', 'b','c','d','e']
     },
     grid: {
-        top:"30px",
+        top:"40px",
         left: '3%',
         right: '20px',
         bottom: '3%',
@@ -216,12 +231,56 @@ var option_3= {
     ]
 };
 var option_4 = {
+    // title : {
+    //     text: '某站点用户访问来源',
+    //     subtext: '纯属虚构',
+    //     x:'center'
+    // },
+    tooltip : {
+        trigger: 'item',
+        formatter: "{a} <br/>{b} : {c} ({d}%)"
+    },
+    // legend: {
+    //     orient: 'vertical',
+    //     left: 'left',
+    //     data: ['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
+    // },
+    color:["#46ADEA","#E97F40","#F0AA20","#85CB99","#71CFE4","#F4D159"],
+    series : [
+        {
+            name: '多元渠道分团队保费占比',
+            type: 'pie',
+            radius : '55%',
+            center: ['50%', '50%'],
+            data:[
+                {value:335, name:'个险经代'},
+                {value:310, name:'团险经代'},
+                {value:234, name:'百销'},
+            ],
+            itemStyle: {
+                emphasis: {
+                    shadowBlur: 10,
+                    shadowOffsetX: 0,
+                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                }
+            }
+        }
+    ]
+};
+
+var option_5 = {
+    tooltip : {
+        trigger: 'axis',
+        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+            type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+        }
+    },
     textStyle:{
         color:"#aaaaaa"
     },
     xAxis: {
         type: 'category',
-        data: ['个险', '团险', '银保', '电商'],        
+        data: echartsObj.echarts_5_title,
         axisLine: {
             lineStyle: {
                 type: 'solid',
@@ -229,6 +288,10 @@ var option_4 = {
                 width:'1'
             }
         },
+        // axisLabel: {
+        //     interval:0,
+        //     rotate:20
+        // },
     },
     yAxis: {
         type: 'value',
@@ -254,13 +317,13 @@ var option_4 = {
         left:45,
         right:10,
         top:30,
-        bottom:20,
+        bottom:33,
         containLabel:false,
         show:'true',
         borderWidth:'0'
     },
     series: [{
-        data: [820, 932, 901, 1934],
+        data: echartsObj.echarts_5_data,
         type: 'bar',
         itemStyle: {
             normal: {
@@ -274,284 +337,15 @@ var option_4 = {
                 }
             }
         },
-        barWidth:8,
+        barWidth:20,
     }]
-};
-var posList = [
-    'left', 'right', 'top', 'bottom',
-    'inside',
-    'insideTop', 'insideLeft', 'insideRight', 'insideBottom',
-    'insideTopLeft', 'insideTopRight', 'insideBottomLeft', 'insideBottomRight'
-];
-
-// app.configParameters = {
-//     rotate: {
-//         min: -90,
-//         max: 90
-//     },
-//     align: {
-//         options: {
-//             left: 'left',
-//             center: 'center',
-//             right: 'right'
-//         }
-//     },
-//     verticalAlign: {
-//         options: {
-//             top: 'top',
-//             middle: 'left',
-//             bottom: 'bottom'
-//         }
-//     },
-//     position: {
-//         options: echarts.util.reduce(posList, function (map, pos) {
-//             map[pos] = pos;
-//             return map;
-//         }, {})
-//     },
-//     distance: {
-//         min: 0,
-//         max: 100
-//     }
-// };
-
-app.config = {
-    rotate: 90,
-    align: 'left',
-    verticalAlign: 'middle',
-    position: 'insideBottom',
-    distance: 15,
-    onChange: function () {
-        var labelOption = {
-            normal: {
-                rotate: app.config.rotate,
-                align: app.config.align,
-                verticalAlign: app.config.verticalAlign,
-                position: app.config.position,
-                distance: app.config.distance
-            }
-        };
-        myChart.setOption({
-            series: [{
-                label: labelOption
-            }, {
-                label: labelOption
-            }, {
-                label: labelOption
-            }, {
-                label: labelOption
-            }]
-        });
-    }
-};
-var labelOption = {
-    normal: {
-        show: true,
-        position: app.config.position,
-        distance: app.config.distance,
-        align: app.config.align,
-        verticalAlign: app.config.verticalAlign,
-        rotate: app.config.rotate,
-        formatter: '{c}  {name|{a}}',
-        fontSize: 16,
-        rich: {
-            name: {
-                textBorderColor: '#fff'
-            }
-        }
-    }
-};
-
-// var option_5 = {
-//     textStyle:{
-//         color:"#aaa"
-//     },
-//     color: ['#46ADEA','#E97F40','#F0AA20','#85CB99','#71CFE4',
-//          '#F4D159','#9BCA63','#FAD860'
-//     ],
-//     tooltip: {
-//         trigger: 'axis',
-//         axisPointer: {
-//             type: 'shadow'
-//         }
-//     },
-//     grid: {
-//         left:30,
-//         right:10,
-//         top:10,
-//         bottom:20,
-//         containLabel:false,
-//         show:'true',
-//         borderWidth:'0'
-//     },
-//     // legend: {
-//     //     data: ['Forest', 'Steppe', 'Desert', 'Wetland']
-//     // },
-//     calculable: true,
-//     xAxis: [
-//         {
-//             type: 'category',
-//             axisTick: {show: false},
-//             data: [ '2014', '2015', '2016','2017', '2018'],
-//             axisLine: {
-//                 lineStyle: {
-//                     type: 'solid',
-//                     color:'#aaaaaa',
-//                     width:'1'
-//                 }
-//             },
-//         }
-//     ],
-//     yAxis: [
-//         {
-//             type: 'value',
-//             splitLine:{
-//                 lineStyle: {
-//                     color: ['rgba(163,216,252,0.20)']
-//                 }
-//             },
-//             axisLine: {
-//                 lineStyle: {
-//                     type: 'solid',
-//                     color:'#aaaaaa',
-//                     width:'1'
-//                 }
-//             },
-//         }
-//     ],
-//     series: [
-//         {
-//             name: '个险',
-//             type: 'bar',
-//             barGap: 0,
-//             barWidth:8,
-//             // label: labelOption,
-//             data: [320, 332, 301, 334, 390]
-//         },
-//         {
-//             name: '团险',
-//             type: 'bar',
-//             barWidth:8,
-//             // label: labelOption,
-//             data: [220, 182, 191, 234, 290]
-//         },
-//         {
-//             name: '银保',
-//             type: 'bar',
-//             barWidth:8,
-//             // label: labelOption,
-//             data: [150, 232, 201, 154, 190]
-//         },
-//         {
-//             name: '电商',
-//             type: 'bar',
-//             barWidth:8,
-//             // label: labelOption,
-//             data: [98, 77, 101, 99, 40]
-//         }
-//     ]
-// };
-var option_5= {
-    tooltip : {
-        trigger: 'axis',
-        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
-            type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
-        }
-    },
-    color: ['#46ADEA','#E97F40','#F0AA20','#85CB99','#71CFE4',
-         '#F4D159','#9BCA63','#FAD860'
-    ],
-    // legend: {
-    //     data: ['个险', '团险','银保','电商']
-    // },
-    grid: {
-        left:40,
-        right:10,
-        top:10,
-        bottom:20,
-        containLabel:false,
-    },
-    xAxis:  {
-        type: 'category',
-        data: ['2014','2015','2016','2017','2018'],
-        axisLine: {
-            lineStyle: {
-                type: 'solid',
-                color:'#aaaaaa',
-                width:'1'
-            }
-        },
-    },
-    yAxis: {
-        type: 'value',
-        splitLine:{
-            lineStyle: {
-            color: ['rgba(163,216,252,0.20)']
-            }
-        },
-        axisLine: {
-            lineStyle: {
-                type: 'solid',
-                color:'#aaaaaa',
-                width:'1'
-            }
-        },
-    },
-    series: [
-        {
-            name: '个险',
-            type: 'bar',
-            stack: '总量',
-            label: {
-                normal: {
-                    show: false,
-                    position: 'inside'
-                }
-            },
-            data: [ 301, 334, 390, 1330, 320]
-        },
-        {
-            name: '团险',
-            type: 'bar',
-            stack: '总量',
-            label: {
-                normal: {
-                    show: false,
-                    position: 'inside'
-                }
-            },
-            data: [101, 1134, 90, 230, 210]
-        },
-        {
-            name: '银保',
-            type: 'bar',
-            stack: '总量',
-            label: {
-                normal: {
-                    show: false,
-                    position: 'inside'
-                }
-            },
-            data: [191, 234, 290, 1330, 310]
-        },
-        {
-            name: '电商',
-            type: 'bar',
-            stack: '总量',
-            label: {
-                normal: {
-                    show: false,
-                    position: 'inside'
-                }
-            },
-            data: [220, 182, 191, 234, 1290]
-        }
-    ]
+    // color:["#46ADEA","#E97F40","#F0AA20","#85CB99","#71CFE4","#F4D159"]
 };
 export {
     option_1,
     option_2,
     option_3,
     option_4,
-    option_5
+    option_5,
+    echartsObj
 }    

@@ -3,9 +3,9 @@
     <Row class="h100"> 
         <Col span="6" class="h100 page-side">
           <h4 class="page-title">
-            各地区总保费排名
+            机构预算达成率
           </h4>
-          <div class="page-content" style="position:relative">
+          <div class="page-content" style="position:relative;height:40%;">
             <i class="top-l"></i>
             <i class="top-r"></i>
             <i class="bottom-l"></i>
@@ -14,19 +14,9 @@
             <Button type="primary" size="small" style="background: #50A5E0;position:absolute;right:4px;top:4px;padding:0 6px;">当月</Button>
           </div>
           <h4 class="page-title">
-            预算目标达成情况
-          </h4>
-          <div class="page-content">
-            <i class="top-l"></i>
-            <i class="top-r"></i>
-            <i class="bottom-l"></i>
-            <i class="bottom-r"></i>
-            <div id="echart_2"></div>
-          </div>
-          <h4 class="page-title">
             热门产品保费排名
           </h4>
-          <div class="page-content">
+          <div class="page-content" style="height:46%">
             <i class="top-l"></i>
             <i class="top-r"></i>
             <i class="bottom-l"></i>
@@ -35,27 +25,59 @@
           </div>
         </Col>
         <Col span="12" class="h100 page-middle">
-          <h1 class="text-center">复星联合健康险开门红</h1>
-          <div class="page-content" style="">
+          <h1 class="text-center">复星联合健康保险2019开门红</h1>
+          <p class="text-right" style="height:14px">{{currDate}}</p>
+          <div class="page-content">
             <i class="top-l"></i>
             <i class="top-r"></i>
             <i class="bottom-l"></i>
             <i class="bottom-r"></i>
             <div>
                <h3>全国销售总额</h3>
-               <h2 class="saleTotal text-center"><span class="float-l">￥</span><span>123,455,388</span><span class="float-r">元</span></h2>
-               <div class="project flex">
-                  <div v-for="item in 6">
-                    <div class="echart_5" style="width:100%;height:180px;"></div>
-                    <p>{{locationArr[item-1]}}</p>
-                  </div>
-               </div>
+                <Row>
+                <Col span="12" class="cash-flex">
+                  <div class="text-center cash-item-l">新单保费收入 <br>（不含规模）</div>
+                  <div class="saleTotal text-right"><span>123,455</span><span class="float-r">元</span></div>
+                </Col>
+                <Col span="12" class="cash-flex">
+                  <div class="text-center cash-item-l cash-item-l-2">银保规模保费</div>
+                  <div class="saleTotal text-right"><span>123,455</span><span class="float-r">元</span></div>
+                </Col>
+                </Row>  
+            </div>
+          </div>
+          <div class="page-content">
+            <i class="top-l"></i>
+            <i class="top-r"></i>
+            <i class="bottom-l"></i>
+            <i class="bottom-r"></i>
+            <div>
+               <h3>各机构新单保费收入降序排列图表</h3>
+                <Row>
+                <Col span="24" class="cash-flex">
+                  <div class="echart_5" style="width:100%;height:180px;"></div>
+                </Col>
+                </Row>  
+            </div>
+          </div>
+          <div class="page-content">
+            <i class="top-l"></i>
+            <i class="top-r"></i>
+            <i class="bottom-l"></i>
+            <i class="bottom-r"></i>
+            <div>
+               <h3>各条线新单保费收入</h3>
+                <Row>
+                <Col span="24" class="cash-flex">
+                  <div class="echart_5" style="width:100%;height:180px;"></div>
+                </Col>
+                </Row>  
             </div>
           </div>
         </Col>
         <Col span="6" class="h100 page-side">
           <h4 class="page-title">
-            各条线销售额
+            多元渠道分团队保费占比
           </h4>
           <div class="page-content" style="height:40%">
             <i class="top-l"></i>
@@ -98,12 +120,14 @@
   </div>
 </template>
 <script>
+let moment = require("moment");
 import {
   option_1,
   option_2,
   option_3,
   option_4,
-  option_5
+  option_5,
+  echartsObj
 } from "../ajaxData/echartData.js";
 import echarts from 'echarts'
 import $ from 'jquery'
@@ -114,17 +138,27 @@ export default {
       input:'',
       tableData:[],
       currNum:127868,
-      locationArr:['北京','上海','深圳','重点客户','医保发展部','四川']
+      currDate:' ',
+      API:"http://localhost:9999/static/getEchartData_5.json",   //url为当前页面的api接口地址
     };
   },
   components: {
   },
   created() {
+    let scope=this;
     //创建tableData数据
-    this.createTableList();
+    scope.createTableList();
+    
+    //实时刷新当前时间
+    setInterval(()=>{
+      scope.updateCurrentDate()
+    },1000)
   },
   mounted() {
     let scope=this;
+    //ajax获取echart数据
+    scope.getEchartData();
+
     $(window).resize(function() {
       setTimeout(()=>{
         scope.initEcharts()
@@ -140,6 +174,35 @@ export default {
     $(window).unbind("resize")
   },
   methods: {
+    updateCurrentDate(){
+        let scope=this;
+        scope.currDate=moment(new Date()).format('YYYY-MM-DD hh:mm:ss');
+    },
+    //ajax异步获取各机构新单保费收入降序排列图表
+    getEchartData(){
+      let scope=this,
+          _API=scope.API;
+      this.$axios.get(_API).then(res=>{
+        let _d=res.data;
+        if(res && _d){
+          //拼接数据格式
+          let _echarts_5_title=[],_echarts_5_data=[],_data=_d.data;
+          _data.forEach((e,i) => {
+            _echarts_5_title.push(e.name);
+            _echarts_5_data.push(e.value)
+          });
+          //将序列化好的数据动态添加到当前echart图表的配置项option_5中
+          option_5.xAxis.data=_echarts_5_title;
+          option_5.series[0].data=_echarts_5_data;
+          for(let k=0;k<2;k++){
+            let myChart_5 = echarts.init(document.getElementsByClassName('echart_5')[k]);
+            myChart_5.setOption(option_5);
+          }
+        }
+      }).catch(error=>{
+
+      });
+    },
     createTableList(){
       let scope=this,
           list={
@@ -154,16 +217,12 @@ export default {
     initEcharts(){
       // 基于准备好的dom，初始化echarts实例
       let myChart_1 = echarts.init(document.getElementById('echart_1')),
-          myChart_2 = echarts.init(document.getElementById('echart_2')),
+          // myChart_2 = echarts.init(document.getElementById('echart_2')),
           myChart_3 = echarts.init(document.getElementById('echart_3')),
           myChart_4 = echarts.init(document.getElementById('echart_4'));
-      for(let k=0;k<6;k++){
-        let myChart_5 = echarts.init(document.getElementsByClassName('echart_5')[k]);
-        myChart_5.setOption(option_5);
-      }
       // 绘制图表
       myChart_1.setOption(option_1);
-      myChart_2.setOption(option_2);
+      // myChart_2.setOption(option_2);
       myChart_3.setOption(option_3);
       myChart_4.setOption(option_4);
     }
@@ -175,13 +234,17 @@ export default {
   padding:40px 19px;box-sizing:border-box;
 }
 .page-middle{
-  padding-top:39px;
+  padding-top:20px;
 }
 .page-middle .page-content{
   padding:21px 20px;box-sizing:border-box;margin:0 auto 20px;
+  min-height: auto;
 }
 .page-middle h1{
-  margin-bottom:24px;font-size:24px;
+  margin-bottom:10px;font-size:24px;
+}
+.page-middle h1+p{
+  margin-bottom:10px;
 }
 .page-middle h3{font-size:16px;color:#ffffff;}
 .page-table{
@@ -258,8 +321,9 @@ i.bottom-r{
   text-align: center;
 }
 .saleTotal{
-  height: 80px;
-  line-height: 100px;
+  width: 60%;
+  height: 50px;
+  line-height:50px;
   font-size:40px;
   color: #ecb053;
   font-weight: 700;
@@ -273,9 +337,6 @@ i.bottom-r{
   color: #f0f0f0;
 }
 #echart_1,#echart_2,#echart_3,#echart_4{
-    height: 170px;
-}
-#echart_4{
   height: 238px;
 }
 .table{
@@ -300,5 +361,19 @@ i.bottom-r{
   width:25%;
   background: rgba(80,165,224,0.50);
   text-align: center;
+}
+.cash-flex{
+  display: flex;
+  justify-content: center;
+}
+.cash-item-l{
+  width: 40%;
+  height:47px;
+  font-size: 14px;
+  padding-top: 13px;
+  box-sizing: border-box;
+}
+.cash-item-l-2{
+  padding-top: 21px;
 }
 </style>
