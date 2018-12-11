@@ -126,8 +126,7 @@ import {
   option_2,
   option_3,
   option_4,
-  option_5,
-  echartsObj
+  option_5
 } from "../ajaxData/echartData.js";
 import echarts from 'echarts'
 import $ from 'jquery'

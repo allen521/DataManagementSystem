@@ -1,8 +1,4 @@
 import echarts from 'echarts'
-var echartsObj={
-    'echarts_5_title':[],
-    'echarts_5_data':[],
-}
 var option_1 = {
     tooltip : {
         trigger: 'axis',
@@ -346,6 +342,5 @@ export {
     option_2,
     option_3,
     option_4,
-    option_5,
-    echartsObj
+    option_5
 }    
