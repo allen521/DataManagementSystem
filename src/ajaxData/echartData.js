@@ -276,7 +276,7 @@ var option_5 = {
     },
     xAxis: {
         type: 'category',
-        data: echartsObj.echarts_5_title,
+        data: [],
         axisLine: {
             lineStyle: {
                 type: 'solid',
@@ -319,7 +319,7 @@ var option_5 = {
         borderWidth:'0'
     },
     series: [{
-        data: echartsObj.echarts_5_data,
+        data: [],
         type: 'bar',
         itemStyle: {
             normal: {
